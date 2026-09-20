@@ -142,7 +142,7 @@ export class Renderer {
   setGame(game){this.game=game;this.map=game.map;this.camera.reset();this.slotsKey='';this.resize();}
   resize(){
     const r=this.canvas.getBoundingClientRect();if(r.width<1||r.height<1)return;
-    const portrait=r.height>r.width;
+    const portrait=window.matchMedia?.('(max-width:760px) and (orientation:portrait)').matches??r.height>r.width;
     const dpr=Math.min(window.devicePixelRatio||1,portrait?1.75:2);
     this.camera.resize(r.width,r.height,portrait);
     const w=Math.round(r.width*dpr),h=Math.round(r.height*dpr);

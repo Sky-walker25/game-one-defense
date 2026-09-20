@@ -15,7 +15,7 @@ let checkpoint=readSave(),savedGame=Game.restore(checkpoint),modalPaused=false,m
 let lastTime=0,accumulator=0,uiElapsed=0,selectionKey='',previewKey='',announceTimer=0,resultRecorded=false;
 let keyPoint=toPoint([7,6]),storageWarning=false;
 const mobileMedia=window.matchMedia('(max-width:760px)');
-let pendingPoint=null,sheetKind=null,sheetPaused=false,sheetMove=null,drawElapsed=0;
+let pendingPoint=null,sheetKind=null,sheetPaused=false,sheetMove=null,drawElapsed=0,lastDrawTime=0;
 const mobile=()=>mobileMedia.matches;
 const putText=(id,value)=>{const el=$(id),text=String(value);if(el.textContent!==text)el.textContent=text;};
 const putHTML=(id,value)=>{const el=$(id);if(el.innerHTML!==value)el.innerHTML=value;};
@@ -64,7 +64,7 @@ function renderArsenal(){
   $('tower-grid').querySelectorAll('canvas').forEach(c=>drawTowerIcon(c,c.dataset.towerIcon));
 }
 function renderAbilities(){const glyph={strike:'⌖',freeze:'❄',overdrive:'ϟ'};$('abilities').innerHTML=Object.entries(ABILITIES).map(([id,a])=>`<button class="ability-btn" data-ability="${id}" style="--ability-color:${a.color}" aria-label="${a.name} : ${a.desc}" title="${a.name} — ${a.desc} (${a.key})"><span class="ability-glyph" aria-hidden="true">${glyph[id]}</span><span class="ability-text">${a.short}<small data-cooldown="${id}">Prêt</small><span class="ability-description">${a.desc}</span></span><kbd>${a.key}</kbd></button>`).join('');}
-function selectTowerType(type){closeSheet();pendingPoint=null;renderer.hover=null;if(!game||['won','lost'].includes(game.state))return;if(game.gold<TOWERS[type].cost){toast(`Il manque ${TOWERS[type].cost-game.gold} crédits pour ${TOWERS[type].name}.`,true);return;}selectedType=selectedType===type?null:type;selectedId=null;selectedAbility=null;renderer.buildType=selectedType;renderer.selected=null;renderer.ability=null;selectionKey='';sound.play('click');updateUI();}
+function selectTowerType(type){closeSheet();pendingPoint=null;renderer.hover=null;if(!game||['won','lost'].includes(game.state))return;if(game.gold<TOWERS[type].cost){toast(`Il manque ${TOWERS[type].cost-game.gold} crédits pour ${TOWERS[type].name}.`,true);return;}selectedType=selectedType===type?null:type;selectedId=null;selectedAbility=null;renderer.buildType=selectedType;renderer.selected=null;renderer.ability=null;selectionKey='';sound.play('click');updateUI();if(mobile())$('battlefield').focus({preventScroll:true});}
 function selectTower(t){pendingPoint=null;renderer.hover=null;selectedId=t.id;selectedType=null;selectedAbility=null;renderer.selected=t.id;renderer.buildType=null;renderer.ability=null;selectionKey='';sound.play('click');updateUI();if(mobile())openSheet('selection');}
 function deselect(){pendingPoint=null;renderer.hover=null;selectedType=null;selectedId=null;selectedAbility=null;renderer.buildType=null;renderer.selected=null;renderer.ability=null;selectionKey='';if(game)updateUI();}
 function selectAbility(id){closeSheet();pendingPoint=null;renderer.hover=null;if(!game||game.state!=='running'){toast('Les pouvoirs sont disponibles pendant les vagues.');return;}if(game.cooldowns[id]>0){toast(`${ABILITIES[id].name} : encore ${Math.ceil(game.cooldowns[id])} s.`);return;}if(id==='overdrive'){game.ability(id);updateUI();return;}selectedAbility=selectedAbility===id?null:id;selectedType=null;selectedId=null;renderer.ability=selectedAbility;renderer.buildType=null;renderer.selected=null;selectionKey='';updateUI();}
@@ -113,11 +113,13 @@ function renderSelection(){
     else if(t.level===3)html+=b.branches.map((p,i)=>`<button class="upgrade-btn" data-upgrade="${i}" data-cost="${cost}"><span>${p.name}<small>${p.desc}</small></span><span>◈ ${cost}</span></button>`).join('');
     else html+='<div class="build-instruction">◆ Spécialisation maximale</div>';
     if(type!=='support')html+=`<label class="priority-control">CIBLAGE<select id="priority" aria-label="Priorité de ciblage"><option value="first">Premier</option><option value="last">Dernier</option><option value="strong">Plus résistant</option><option value="weak">Plus fragile</option><option value="support">Soigneurs</option></select></label><div class="stat-row"><div><span>ÉLIMINATIONS</span><strong id="tower-kills">${t.kills}</strong></div><div><span>DÉGÂTS INFLIGÉS</span><strong id="tower-damage">${format(t.damage)}</strong></div></div>`;
-    html+=`<button class="sell-btn" id="sell-tower">Revendre · +${Math.floor(t.spent*.7)} crédits</button>`;
+    html+=`<button class="sell-btn" id="sell-tower">Revendre · +${Math.floor(t.spent*7/10)} crédits</button>`;
   }else html+=`<p class="build-instruction">Choisissez un emplacement sur le terrain.</p><button id="cancel-build" class="sell-btn">Annuler <kbd>ÉCHAP</kbd></button>`;
   $('selection-panel').innerHTML=html;if(t&&$('priority'))$('priority').value=t.priority;
 }
 function updateUI(){if(!game)return;
+  const inputHint=mobile()?'Champ de bataille. Touchez Construire, choisissez une tour puis une position et confirmez. Pincez pour zoomer, glissez pour déplacer.':'Champ de bataille. Sélectionnez une tour de 1 à 6, utilisez les flèches pour choisir un emplacement puis Entrée pour construire. Échap pour annuler.';
+  if($('battlefield').getAttribute('aria-label')!==inputHint)$('battlefield').setAttribute('aria-label',inputHint);
   putText('gold-value',format(game.gold));putHTML('lives-value',`${game.lives} <small>/ ${game.maxLives}</small>`);putHTML('wave-value',`${game.wave} <small>/ ${game.endless?'∞':game.map.waves}</small>`);
   $('board-status').textContent={prep:'PHASE DE PRÉPARATION',running:`VAGUE ${String(game.wave).padStart(2,'0')} · ${DIFFICULTIES[game.difficulty].name.toUpperCase()}`,paused:'PAUSE TACTIQUE',won:'SECTEUR SÉCURISÉ',lost:'RÉACTEUR PERDU'}[game.state];
   $('next-wave').disabled=game.state!=='prep';$('next-wave').querySelector('span').textContent=game.state==='prep'?`Lancer la vague ${game.wave+1}`:game.state==='running'?'Vague en cours':game.state==='paused'?'Combat en pause':game.state==='won'?'Mission accomplie':'Mission terminée';
@@ -139,7 +141,7 @@ function openModal(content,wide=false){
   $('modal-content').innerHTML=content;$('modal').classList.toggle('wide',wide);if(!already)$('modal').showModal();if(game)updateUI();
 }
 function closeModal(){if(!$('modal').open)return;$('modal').close();}
-$('modal').addEventListener('close',()=>{if(modalCleanup){modalCleanup();modalCleanup=null;}if(modalPaused&&game?.state==='paused')game.pause();modalPaused=false;if(game)updateUI();});
+$('modal').addEventListener('close',()=>{if($('modal').open)return;if(modalCleanup){modalCleanup();modalCleanup=null;}if(modalPaused&&game?.state==='paused')game.pause();modalPaused=false;if(game)updateUI();});
 const modalHeader=(title)=>`<div class="modal-header"><h2 id="modal-title">${title}</h2><button class="modal-close" data-close aria-label="Fermer">×</button></div>`;
 function confirmModal(title,body,label,callback){openModal(`${modalHeader(title)}<p class="modal-lead">${body}</p><div class="modal-actions"><button class="secondary-btn" data-close>Annuler</button><button class="primary-btn" id="confirm-action">${label}</button></div>`);$('confirm-action').onclick=()=>{closeModal();modalPaused=false;callback();};}
 function showSettings(){openModal(`${modalHeader('Réglages')}<p class="modal-lead">Votre confort de jeu, sur cet appareil.</p>${[['sound','Effets sonores','Tirs, impacts et alertes tactiques.'],['music','Ambiance musicale','Une composition synthétique discrète.'],['particles','Effets de combat','Particules, arcs électriques et explosions.'],['motion','Animations ambiantes','Pulsations et mouvements du décor.'],['battery','Économie de batterie','Affichage limité à 30 images/s. La simulation reste identique.']].map(([key,title,desc])=>`<label class="settings-row"><span><strong>${title}</strong><small>${desc}</small></span><input type="checkbox" data-setting="${key}" ${profile.settings[key]?'checked':''}></label>`).join('')}<label class="settings-row"><span><strong>Volume général</strong></span><input aria-label="Volume général" type="range" id="volume" min="0" max="100" value="${profile.settings.volume*100}"></label><div class="modal-actions"><button class="primary-btn" data-close>Revenir au jeu</button></div>`);
@@ -180,6 +182,7 @@ function closeSheet(){
 }
 function updateMobileUI(){
   if(!mobile())return;
+  if(sheetKind&&!sheetPaused)putText('sheet-eyebrow',`${format(game.gold)} CRÉDITS DISPONIBLES`);
   const placing=Boolean(selectedType||selectedAbility),ended=['won','lost'].includes(game.state);
   $('mobile-dock').classList.toggle('placing',placing);$('placement-bar').hidden=!placing;$('mobile-actions').hidden=placing;
   $('mobile-build').disabled=ended;$('mobile-powers').disabled=game.state!=='running'&&!(sheetPaused&&game.state==='paused');
@@ -250,7 +253,7 @@ function frame(timestamp){
     if(game.state==='running'){accumulator+=dt*speed;let steps=0;while(accumulator>=1/60&&steps<36){game.update(1/60);accumulator-=1/60;steps++;if(game.state!=='running'){accumulator=0;break;}}}else accumulator=0;
     drawElapsed+=dt;
     const limit=profile.settings.battery||game.state!=='running'?1/30:1/60;
-    if(drawElapsed>=limit-.001){renderer.draw(drawElapsed);drawElapsed=0;}
+    if(drawElapsed>=limit-.001){renderer.draw(lastDrawTime?(timestamp-lastDrawTime)/1000:0);lastDrawTime=timestamp;drawElapsed%=limit;}
     uiElapsed+=dt;if(uiElapsed>=.15){updateUI();uiElapsed=0;}
   }
   requestAnimationFrame(frame);

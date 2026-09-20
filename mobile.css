@@ -86,7 +86,7 @@
   .board-announcement{top:10px;left:10px;transform:none;max-width:calc(100% - 74px);width:auto;padding:9px 12px;pointer-events:none;background:#14251de8;border-radius:9px;backdrop-filter:none}
   .board-announcement strong{font-size:14px}.board-announcement span{font-size:11px;line-height:1.4}
   .board-hint{bottom:9px;font-size:11px;line-height:1.35;max-width:calc(100% - 24px);padding:7px 10px;border-radius:8px;pointer-events:none;background:#15251deb}
-  .pause-overlay{gap:12px;background:#102219bb}.pause-overlay strong{font-size:23px}.pause-overlay>span{font-size:28px}.pause-overlay .secondary-btn{min-height:48px;font-size:15px;padding:12px 22px}
+  .pause-overlay{inset:auto;left:12px;top:12px;width:calc(100% - 76px);padding:12px;gap:7px;background:#14251df2;border:1px solid #c8ee8b33;border-radius:12px;backdrop-filter:none;pointer-events:none}.pause-overlay strong{font-size:16px}.pause-overlay>span{display:none}.pause-overlay .secondary-btn{min-height:48px;font-size:14px;padding:10px 16px;pointer-events:auto}
   .battle-main>.command-bar,.battle-main>.intel,.battle-layout>.arsenal,.battle-footer{display:none}
   .mobile-dock{flex:none;background:#17271f;border-top:1px solid #c8ee8b22;padding:0 12px max(12px,env(safe-area-inset-bottom));box-shadow:0 -5px 22px #10201922;z-index:3}
   .mobile-intel{display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;min-height:44px;font-size:12px;color:#bccbb4;text-align:left;padding:5px 1px}.mobile-intel>span:last-child{color:#93a48f;font-size:11px;white-space:nowrap}.mobile-intel>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

@@ -70,7 +70,7 @@ export class Game {
   sell(id) {
     if(['won','lost'].includes(this.state))return false;
     const index=this.towers.findIndex(t=>t.id===id); if(index<0)return false;
-    const t=this.towers[index],refund=Math.floor(t.spent*.7);this.gold+=refund;this.towers.splice(index,1);this.emit('sell',{tower:t,refund});return true;
+    const t=this.towers[index],refund=Math.floor(t.spent*7/10);this.gold+=refund;this.towers.splice(index,1);this.emit('sell',{tower:t,refund});return true;
   }
   setPriority(id,priority) { const t=this.towers.find(t=>t.id===id); if(t&&['first','last','strong','weak','support'].includes(priority))t.priority=priority; }
   startWave() {
