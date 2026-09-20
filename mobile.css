@@ -73,7 +73,7 @@
   .battle-name{gap:0;min-width:0}.battle-name h1{font-size:17px;margin:0;white-space:nowrap;max-width:122px;overflow:hidden;text-overflow:ellipsis}
   .battle-name .eyebrow{font-size:9px;letter-spacing:.9px;max-width:125px;white-space:nowrap;overflow:hidden;display:block;margin-bottom:3px}
   .back-btn{display:none}.resource-group{gap:16px;flex:none}.resource{display:flex;gap:0}.resource-icon{display:none}.resource-label{font-size:9px;letter-spacing:.6px}.resource strong{font-size:21px;line-height:1.3;font-variant-numeric:tabular-nums}.resource small{font-size:11px}.wave-resource{display:flex}
-  .battle-layout{display:flex;flex:1;min-height:0;gap:0}.battle-main{display:flex;flex-direction:column;flex:1;min-height:0;border:0;border-radius:0;position:relative}
+  .battle-layout{display:flex;flex:1;min-height:0;gap:0;align-items:stretch}.battle-main{display:flex;flex-direction:column;flex:1;min-height:0;border:0;border-radius:0;position:relative}
   .board-toolbar{flex:none;height:48px;min-height:48px;padding:0 8px 0 14px;border:0;background:#17271e}
   .board-status{font-size:10px;letter-spacing:1px}.battle-controls{gap:2px}.battle-controls button{min-width:48px;height:48px;font-size:21px;padding:0}
   .battle-controls #speed{font-size:17px;font-variant-numeric:tabular-nums}.battle-controls #pause,.battle-controls #restart,.battle-controls #fullscreen{display:none}

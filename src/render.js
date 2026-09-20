@@ -151,7 +151,7 @@ export class Renderer {
   }
   local(event){const r=this.canvas.getBoundingClientRect();return{x:event.clientX-r.left,y:event.clientY-r.top};}
   point(event){return this.camera.world(this.local(event));}
-  draw(dt){if(!this.game)return;const c=this.ctx,g=this.game,time=this.motion?this.t+=Math.min(dt,.1):0;this.frames++;this.lastFps+=dt;if(this.lastFps>1){this.fps=this.frames/this.lastFps;this.lastFps=0;this.frames=0;}
+  draw(dt){if(!this.game||!this.bg)return;const c=this.ctx,g=this.game,time=this.motion?this.t+=Math.min(dt,.1):0;this.frames++;this.lastFps+=dt;if(this.lastFps>1){this.fps=this.frames/this.lastFps;this.lastFps=0;this.frames=0;}
     const camera=this.camera,view=p=>camera.project(p),w=camera.viewWidth,h=camera.viewHeight;
     c.setTransform(1,0,0,1,0,0);c.fillStyle=BIOMES[g.map.biome].dark;c.fillRect(0,0,this.canvas.width,this.canvas.height);
     const dpr=this.dpr||1;c.setTransform(camera.scale*dpr,0,0,camera.scale*dpr,camera.offsetX*dpr,camera.offsetY*dpr);c.drawImage(this.bg,0,0);
