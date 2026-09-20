@@ -1,8 +1,10 @@
 # BASTION — Game One Defense
 
-Jeu de défense tactique solo en français, conçu pour le navigateur. Protégez le réacteur, anticipez les vagues et combinez vos défenses.
+Jeu de défense tactique solo en français, conçu pour le navigateur et le téléphone en portrait. Protégez le réacteur, anticipez les vagues et combinez vos défenses.
 
 ## Jouer
+
+Jouer : **https://sky-walker25.github.io/game-one-defense/**
 
 Le jeu est publié avec GitHub Pages par le workflow **Deploy BASTION** depuis la branche `main`.
 
@@ -15,6 +17,18 @@ Le jeu est publié avec GitHub Pages par le workflow **Deploy BASTION** depuis l
 - Pause, vitesses ×1/×2/×3, commandes tactiles et clavier, son synthétique et réglages des effets.
 
 Les sauvegardes sont locales : elles ne se synchronisent pas entre appareils et peuvent être supprimées par le nettoyage des données du navigateur. Si le stockage est bloqué, le jeu affiche une notification et reste jouable en mémoire.
+
+## Sur téléphone
+
+Le combat occupe la hauteur disponible, avec le réacteur en bas et les ressources toujours visibles. Les commandes principales sont en bas de l’écran. Le terrain garde exactement les mêmes règles et positions qu’au bureau ; les sauvegardes existantes restent compatibles.
+
+1. Touchez **Construire**, puis une tour dans l’arsenal.
+2. Touchez un emplacement pour voir la portée. Déplacez cet aperçu si nécessaire, puis confirmez l’achat.
+3. Pincez pour zoomer, glissez pour déplacer la vue ; le bouton de recadrage affiche tout le terrain.
+4. Touchez une tour pour l’améliorer ou choisir sa cible. Les panneaux mettent automatiquement le combat en pause, puis le reprennent à la fermeture.
+5. Ouvrez **Pouvoirs** pendant une vague. La frappe et la stase demandent une position et une confirmation ; la surcadence agit immédiatement.
+
+Le menu de mission donne accès au guide, aux réglages, à l’encyclopédie et à la campagne. Le mode **Économie de batterie** limite l’affichage à 30 images/s sans modifier la simulation. L’affichage est également réduit pendant la préparation et arrêté en arrière-plan. Les surfaces de terrain mises en cache sont limitées à trois ; le ciblage évite les tris et les statistiques des tours sont réutilisées.
 
 ## Développement
 
@@ -35,7 +49,7 @@ npm run build     # sortie statique dans dist/
 | Action | Commande |
 |---|---|
 | Choisir une tour | `1` à `6`, ou un bouton de l’arsenal |
-| Placer / sélectionner | Clic ou toucher le terrain |
+| Placer / sélectionner | Clic ; sur mobile, toucher puis confirmer le placement |
 | Position au clavier | Flèches puis `Entrée` |
 | Lancer une vague / pause | `Espace` |
 | Frappe / Stase / Surcadence | `Q` / `W` / `E` |
@@ -48,6 +62,9 @@ npm run build     # sortie statique dans dist/
 
 - `src/data.js` : contenu, cartes, configurations, composition des vagues.
 - `src/engine.js` : simulation sans DOM, ciblage, combat, effets, économie et checkpoints.
+- `src/camera.js` : projection portrait, zoom, déplacement et reconnaissance des gestes sans DOM.
+- `mobile.css` : interface de combat, commandes au pouce et panneaux mobiles.
+- `qa/viewport.html` : cadres de navigateur de 320 à 430 px, paysage et bureau pour les vérifications manuelles.
 - `src/render.js` : rendu Canvas 2D, terrain mis en cache, unités et effets.
 - `src/app.js` : interface, contrôles, boucle à pas fixe de 1/60 s et progression.
 - `src/storage.js` : validation des sauvegardes et profil local versionné.

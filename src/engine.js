@@ -15,7 +15,10 @@ export function pointAt(path,d) {
   for(const s of path.segments) if(d<=s.start+s.len) { const t=Math.max(0,(d-s.start)/s.len); return {x:s.a.x+(s.b.x-s.a.x)*t,y:s.a.y+(s.b.y-s.a.y)*t,angle:Math.atan2(s.b.y-s.a.y,s.b.x-s.a.x)}; }
   return {...path.nodes.at(-1),angle:0};
 }
+const statsCache=new WeakMap();
 export function towerStats(t) {
+  const cached=statsCache.get(t);
+  if(cached&&cached.level===t.level&&cached.branch===t.branch&&cached.type===t.type)return cached.stats;
   const b=TOWERS[t.type]; const l=Math.min(t.level,3)-1;
   const s={...b,damage:b.damage*(1+l*.62),range:b.range+l*12,rate:b.rate/(1+l*.12),buff:b.buff?b.buff+l*.06:0};
   if(t.branch !== null && t.branch !== undefined) {
@@ -23,7 +26,7 @@ export function towerStats(t) {
     for(const key of ['damage','range','rate']) if(p[key]) s[key]*=p[key];
     for(const key of ['air','splash','burn','slow','vuln','chain','emp','execute','reveal','buff','income']) if(p[key]!==undefined)s[key]=p[key];
   }
-  return s;
+  statsCache.set(t,{level:t.level,branch:t.branch,type:t.type,stats:s});return s;
 }
 export function upgradeCost(t) { return t.level>=4?0:Math.round(TOWERS[t.type].cost * [0,.85,1.3,2.2][t.level]); }
 
@@ -93,11 +96,20 @@ export class Game {
     return this.towers.some(t=>{const s=towerStats(t);return !t.disabled&&(s.type==='support'||s.reveal)&&distance(t,e)<=s.range;});
   }
   target(t,s) {
-    const candidates=this.enemies.filter(e=>!e.dead&&(!e.flying||s.air)&&(!e.phase||this.reveal(e))&&distance(t,e)<=s.range+e.size*.3);
-    if(!candidates.length)return null;
-    const order={first:(a,b)=>b.d/b.pathLength-a.d/a.pathLength,last:(a,b)=>a.d/a.pathLength-b.d/b.pathLength,strong:(a,b)=>b.hp+b.shield-a.hp-a.shield,weak:(a,b)=>a.hp+a.shield-b.hp-b.shield,support:(a,b)=>Number(!!ENEMIES[b.type].heal)-Number(!!ENEMIES[a.type].heal)||b.d/b.pathLength-a.d/a.pathLength};
-    candidates.sort(order[t.priority]||order.first);return candidates[0];
+    let best=null,bestScore=-Infinity,bestMedic=false;
+    for(const e of this.enemies){
+      const range=s.range+e.size*.3,dx=t.x-e.x,dy=t.y-e.y;
+      if(e.dead||(e.flying&&!s.air)||dx*dx+dy*dy>range*range||(e.phase&&!this.reveal(e)))continue;
+      let score=e.d/e.pathLength;
+      if(t.priority==='last')score=-score;
+      if(t.priority==='strong')score=e.hp+e.shield;
+      if(t.priority==='weak')score=-e.hp-e.shield;
+      const medic=t.priority==='support'&&Boolean(ENEMIES[e.type].heal);
+      if(!best||(medic&&!bestMedic)||(medic===bestMedic&&score>bestScore)){best=e;bestScore=score;bestMedic=medic;}
+    }
+    return best;
   }
+
   damage(e,amount,type='energy',tower=null) {
     if(e.dead||amount<=0)return;
     let value=amount*(1+(e.vulnTime>0?e.vuln:0));

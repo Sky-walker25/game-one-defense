@@ -3,12 +3,12 @@ const root = new URL('../', import.meta.url);
 const dist = new URL('dist/', root);
 await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
-for (const path of ['index.html', 'styles.css', 'favicon.svg', '.nojekyll', 'src', 'assets']) {
+for (const path of ['index.html', 'styles.css', 'mobile.css', 'favicon.svg', '.nojekyll', 'src', 'assets', 'qa']) {
   await cp(new URL(path, root), new URL(path, dist), { recursive: true });
 }
 // The production bundle also runs from a local file, without an HTTP server.
 // Modules remain separate in src/ for development and direct simulation tests.
-const modules = ['data', 'engine', 'storage', 'audio', 'render', 'app'];
+const modules = ['data', 'engine', 'storage', 'audio', 'camera', 'render', 'app'];
 const parts = await Promise.all(modules.map(async name => {
   const source = await readFile(new URL(`src/${name}.js`, root), 'utf8');
   return `// src/${name}.js\n` + source.replace(/^import .*;\r?\n/gm, '').replace(/^export /gm, '');

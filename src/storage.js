@@ -1,7 +1,7 @@
 import { VERSION, MAPS } from './data.js';
 export const SAVE_KEY='bastion-save-v1';
 export const PROFILE_KEY='bastion-profile-v1';
-const defaultProfile=()=>({version:VERSION,medals:{},bestWaves:{},wins:0,kills:0,tutorial:false,settings:{sound:true,music:true,volume:.55,particles:true,motion:true}});
+const defaultProfile=()=>({version:VERSION,medals:{},bestWaves:{},wins:0,kills:0,tutorial:false,settings:{sound:true,music:true,volume:.55,particles:true,motion:true,battery:false}});
 export function readProfile(storage) {
   try {
     storage??=globalThis.localStorage;
@@ -11,7 +11,7 @@ export function readProfile(storage) {
     for(const [k,v] of Object.entries(p.bestWaves||{}))if(Number.isInteger(v)&&v>=0&&v<=10000)result.bestWaves[k]=v;
     for(const k of ['wins','kills'])if(Number.isFinite(p[k])&&p[k]>=0)result[k]=p[k];
     result.tutorial=!!p.tutorial;
-    for(const k of ['sound','music','particles','motion'])if(typeof p.settings?.[k]==='boolean')result.settings[k]=p.settings[k];
+    for(const k of ['sound','music','particles','motion','battery'])if(typeof p.settings?.[k]==='boolean')result.settings[k]=p.settings[k];
     if(Number.isFinite(p.settings?.volume))result.settings.volume=Math.max(0,Math.min(1,p.settings.volume));return result;
   }catch{return defaultProfile();}
 }

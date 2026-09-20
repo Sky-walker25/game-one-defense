@@ -8,6 +8,7 @@
   <title>BASTION — Game One Defense</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./mobile.css">
 </head>
 <body>
   <div class="app-shell">
@@ -33,15 +34,20 @@
         <div class="hero-mission-badge"><span>VOTRE OBJECTIF</span><strong>Le réacteur doit tenir.</strong><p>Placez. Améliorez. Résistez.</p></div>
       </section>
       <section class="operations" aria-labelledby="operations-title"><div class="section-line"><h2 id="operations-title">Théâtre des opérations</h2><span id="campaign-progress">01 / 06 secteurs accessibles</span></div><div class="mission-grid" id="mission-grid"></div></section>
-      <footer class="campaign-footer"><span><span class="tiny-shield">◆</span> Chaque position compte.</span><button id="help-open">Guide du commandant <span aria-hidden="true">↗</span></button><span class="version-label">BASTION · 1.0</span></footer>
+      <footer class="campaign-footer"><span><span class="tiny-shield">◆</span> Chaque position compte.</span><button id="help-open">Guide du commandant <span aria-hidden="true">↗</span></button><span class="version-label">BASTION · 1.1</span></footer>
     </main>
 
     <main id="game-screen" hidden>
       <section class="battle-heading"><div class="battle-name"><button id="back-campaign" class="back-btn" aria-label="Retour à la campagne">←</button><div><span class="eyebrow" id="battle-operation">OPÉRATION 01 / LES MARCHES VERTES</span><h1 id="battle-title">Lisière</h1></div></div><div class="resource-group"><div class="resource"><span class="resource-icon gold-icon">◈</span><div><span class="resource-label">CRÉDITS</span><strong id="gold-value">430</strong></div></div><div class="resource"><span class="resource-icon heart-icon">⬡</span><div><span class="resource-label">RÉACTEUR</span><strong id="lives-value">20 <small>/ 20</small></strong></div></div><div class="resource wave-resource"><span class="resource-icon">≋</span><div><span class="resource-label">VAGUE</span><strong id="wave-value">0 <small>/ 15</small></strong></div></div></div></section>
       <div class="battle-layout">
         <section class="battle-main" aria-label="Champ de bataille">
-          <div class="board-toolbar"><span class="board-status" id="board-status">PHASE DE PRÉPARATION</span><div class="battle-controls"><button id="speed" title="Vitesse du jeu · X">×1</button><button id="pause" aria-label="Mettre en pause" title="Pause · Espace">Ⅱ</button><button id="restart" aria-label="Recommencer la mission" title="Recommencer">↻</button><button id="fullscreen" aria-label="Plein écran" title="Plein écran">⛶</button></div></div>
-          <div class="board-wrap" id="board-wrap"><canvas id="battlefield" tabindex="0" aria-label="Champ de bataille. Sélectionnez une tour de 1 à 6, utilisez les flèches pour choisir un emplacement puis Entrée pour construire. Échap pour annuler."></canvas><div class="board-announcement" id="board-announcement" aria-live="polite" hidden></div><div class="pause-overlay" id="pause-overlay" hidden><span>Ⅱ</span><strong>Pause tactique</strong><button id="resume-battle" class="secondary-btn">Reprendre le combat</button></div><div class="board-hint" id="board-hint">Sélectionnez une tour, puis un emplacement libre.</div></div>
+          <div class="board-toolbar"><span class="board-status" id="board-status">PHASE DE PRÉPARATION</span><div class="battle-controls"><button id="battle-menu" class="mobile-only" aria-label="Menu de la mission">☰</button><button id="speed" title="Vitesse du jeu · X">×1</button><button id="pause" aria-label="Mettre en pause" title="Pause · Espace">Ⅱ</button><button id="restart" aria-label="Recommencer la mission" title="Recommencer">↻</button><button id="fullscreen" aria-label="Plein écran" title="Plein écran">⛶</button></div></div>
+          <div class="board-wrap" id="board-wrap"><canvas id="battlefield" tabindex="0" aria-label="Champ de bataille. Sélectionnez une tour de 1 à 6, utilisez les flèches pour choisir un emplacement puis Entrée pour construire. Échap pour annuler."></canvas><div class="board-announcement" id="board-announcement" aria-live="polite" hidden></div><div class="pause-overlay" id="pause-overlay" hidden><span>Ⅱ</span><strong>Pause tactique</strong><button id="resume-battle" class="secondary-btn">Reprendre le combat</button></div><div class="camera-controls mobile-only" aria-label="Vue du terrain"><button id="zoom-in" aria-label="Agrandir le terrain">＋</button><button id="zoom-out" aria-label="Réduire le terrain">−</button><button id="zoom-reset" aria-label="Voir tout le terrain">⛶</button></div><div class="board-hint" id="board-hint">Sélectionnez une tour, puis un emplacement libre.</div></div>
+          <div class="mobile-dock mobile-only" id="mobile-dock">
+            <button class="mobile-intel" id="mobile-intel" aria-haspopup="dialog"><span id="mobile-wave-summary">Prochaine vague</span><span>Voir les menaces ›</span></button>
+            <div class="placement-bar" id="placement-bar" hidden><div><strong id="placement-title">Choisissez une position</strong><span id="placement-detail">Touchez le terrain pour voir la portée.</span></div><button id="placement-cancel" class="secondary-btn" aria-label="Annuler le placement">×</button><button id="placement-confirm" class="primary-btn" disabled>Construire</button></div>
+            <div class="mobile-actions" id="mobile-actions"><button id="mobile-build" aria-haspopup="dialog"><span aria-hidden="true">⊞</span>Construire</button><button id="mobile-powers" aria-haspopup="dialog"><span aria-hidden="true">ϟ</span>Pouvoirs</button><button id="mobile-wave" class="primary-btn">Lancer la vague <span aria-hidden="true">▶</span></button></div>
+          </div>
           <div class="command-bar"><div class="abilities" id="abilities"></div><button id="next-wave" class="primary-btn wave-btn"><span>Lancer la vague</span><kbd>ESPACE</kbd></button></div>
           <section class="intel"><div class="intel-heading"><span class="eyebrow" id="intel-title">PROCHAINE VAGUE</span><span id="enemy-count">6 unités détectées</span></div><div class="enemy-preview" id="enemy-preview"></div></section>
         </section>
@@ -50,6 +56,7 @@
       <footer class="battle-footer"><span id="save-status">Sauvegarde automatique entre les vagues</span><span><kbd>1–6</kbd> Construire <kbd>Q W E</kbd> Pouvoirs <kbd>X</kbd> Vitesse <kbd>?</kbd> Aide</span></footer>
     </main>
   </div>
+  <dialog id="tactical-sheet" aria-labelledby="sheet-title"><div class="sheet-grip" aria-hidden="true"></div><header class="sheet-header"><div><span class="eyebrow" id="sheet-eyebrow">DÉFENSE TACTIQUE</span><h2 id="sheet-title">Arsenal</h2></div><button id="sheet-close" class="icon-btn" aria-label="Fermer le panneau">×</button></header><p id="sheet-caption" class="sheet-caption"></p><div id="sheet-body"></div></dialog>
   <dialog id="modal" aria-labelledby="modal-title"><div class="modal-content" id="modal-content"></div></dialog>
   <div class="toast-stack" id="toasts" aria-live="polite" aria-atomic="true"></div>
   <noscript><p class="noscript">Activez JavaScript pour jouer à BASTION.</p></noscript>

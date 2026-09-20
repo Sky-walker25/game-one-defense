@@ -1,0 +1,110 @@
+/* Mobile is a full-height command surface. Only the sheets scroll in battle. */
+.mobile-only{display:none}
+#tactical-sheet{width:min(600px,100%);max-height:85dvh;margin:auto auto 0;border-radius:22px 22px 0 0;padding:0 20px max(22px,env(safe-area-inset-bottom));overflow:auto;overscroll-behavior:contain}
+#tactical-sheet::backdrop{background:#06140d99;backdrop-filter:none}
+.sheet-grip{width:38px;height:4px;border-radius:4px;background:#6b7b6b;margin:10px auto 4px}
+.sheet-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0 6px}
+.sheet-header h2{font-size:24px;letter-spacing:-.6px}.sheet-header .eyebrow{font-size:10px;letter-spacing:1.5px}.sheet-header .icon-btn{width:48px;height:48px;font-size:28px;background:#ffffff09;border-radius:50%}
+.sheet-caption{color:#a7b7a7;font-size:14px;line-height:1.5;margin:0 0 16px}
+#sheet-body .tower-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+#sheet-body .tower-card{min-height:124px;padding:5px 4px 10px;border-radius:12px;background:#203329}
+#sheet-body .tower-card canvas{width:72px;height:63px}
+#sheet-body .tower-card kbd{display:none}
+#sheet-body .tower-card strong,#sheet-body .tower-card .cost{font-size:13px}
+#sheet-body .tower-card .tower-role{display:block;font-size:10px;color:#a3b2a2;white-space:nowrap}
+#sheet-body .selection-panel{padding:0;border:0;margin:0;min-height:0}
+#sheet-body .selected-title h3{font-size:22px}
+#sheet-body .selected-title>span{font-size:12px}
+#sheet-body .selected-role{font-size:13px}
+#sheet-body .selected-desc{font-size:14px;line-height:1.55}
+#sheet-body .stat-row{margin:16px 0}
+#sheet-body .stat-row span{font-size:11px}
+#sheet-body .stat-row strong{font-size:20px}
+#sheet-body .upgrade-btn{min-height:66px;font-size:14px;padding:12px;border-radius:9px}
+#sheet-body .upgrade-btn small{font-size:12px;max-width:230px}
+#sheet-body .priority-control{font-size:12px;gap:12px}
+#sheet-body select{font-size:16px;min-height:48px}
+#sheet-body .sell-btn{font-size:14px;min-height:48px;width:100%;border:1px solid #c5ab8633;border-radius:8px;margin-top:8px}
+#sheet-body .abilities{display:grid;gap:10px}
+#sheet-body .ability-btn{min-height:80px;gap:16px;padding:15px;text-align:left;border-radius:12px}
+#sheet-body .ability-glyph{font-size:30px;width:32px}
+#sheet-body .ability-text{font-size:17px;flex:1}
+#sheet-body .ability-text small{font-size:13px;margin-top:4px}
+#sheet-body .ability-btn kbd{display:none}
+#sheet-body .ability-description{display:block;font-size:12px;line-height:1.4;color:#b2c1af;font-weight:400;margin-top:6px}
+.ability-description,.tower-role{display:none}
+#sheet-body .intel{border:0;padding:0}
+#sheet-body .enemy-preview{display:flex;flex-direction:column;align-items:stretch;gap:8px}
+#sheet-body .enemy-chip{font-size:15px;min-height:48px;justify-content:flex-start;padding:10px 15px;border-radius:9px}
+#sheet-body .enemy-chip b{margin-left:auto;font-size:14px}
+#sheet-body .intel-heading>span{font-size:12px}
+.battle-menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.battle-menu-grid button{min-height:56px;background:#25392b;border:1px solid #c8ee8b25;border-radius:10px;text-align:left;padding:12px;font-size:14px}
+@media(max-width:760px){
+  :root{--touch:48px}
+  body{font-size:15px;-webkit-text-size-adjust:100%}
+  button,select{touch-action:manipulation}
+  .app-shell{padding:0 16px}
+  .topbar{height:76px;padding-top:env(safe-area-inset-top);gap:12px}
+  .brand{min-height:48px}.brand strong{font-size:21px}.brand small{font-size:8px}
+  .topnav{display:none}.topbar-right{gap:2px}.icon-btn{width:48px;height:48px}
+  .campaign-hero{margin-top:16px;min-height:0;border-radius:16px}
+  .hero-art{background-position:63% 20%;background-size:auto 430px;background-repeat:no-repeat}
+  .hero-vignette{background:linear-gradient(0deg,#15271e 12%,#15271ee8 52%,#10251b55 100%)}
+  .hero-content{padding:24px 20px 20px;max-width:none}
+  .hero-content>.eyebrow{font-size:9px;letter-spacing:1.1px}.hero-content>.eyebrow .eyebrow-sep{margin:0}
+  .operation-number{margin-top:47px;font-size:11px}.hero-content h1{font-size:48px;letter-spacing:-2px}
+  .mission-subtitle{font-size:17px}.mission-description{font-size:14px;line-height:1.55;margin:13px 0;color:#b8c6b5}
+  .mission-specs{font-size:12px;gap:12px;flex-wrap:wrap}.hero-coordinate,.hero-mission-badge{display:none}
+  .deployment-options{margin:18px 0 14px;gap:10px;display:grid;grid-template-columns:1fr 1.45fr}
+  .deployment-options label{min-width:0;font-size:10px;letter-spacing:1px}
+  .deployment-options select{width:100%;min-height:48px;padding:8px 4px 8px 9px;font-size:16px}
+  .deploy-actions{display:flex;flex-direction:column;gap:9px}.deploy-actions>*{width:100%}
+  .deploy-actions .primary-btn{min-height:54px;border-radius:10px;font-size:16px;justify-content:space-between;padding:13px 18px}
+  .deploy-actions .secondary-btn{min-height:48px;font-size:15px;border-radius:10px}
+  .save-note{font-size:11px;margin-top:12px;text-align:center}.operations{margin-top:23px}
+  .section-line h2{font-size:15px}.section-line>span{font-size:10px;max-width:104px;text-align:right}
+  .mission-grid{display:grid;grid-template-columns:repeat(6,146px);overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding:3px 2px 14px;margin:0 -2px;scrollbar-width:thin;scrollbar-color:#57754b transparent}
+  .mission-card{scroll-snap-align:start;border-radius:10px}.mission-card canvas{aspect-ratio:1.7}.mission-card-body{padding:10px}.mission-card h3{font-size:14px}.mission-card small{font-size:10px}.mission-card .selected-marker{font-size:8px}
+  .campaign-footer{padding:6px 0 max(16px,env(safe-area-inset-bottom));gap:4px}.campaign-footer>span:first-child{font-size:11px}.campaign-footer button{font-size:12px;min-height:48px;padding:8px}.version-label{display:none}
+  body.in-battle{overflow:hidden;overscroll-behavior:none}
+  .in-battle .app-shell{padding:0;max-width:none}.in-battle .topbar{display:none}
+  #game-screen,#game-screen:fullscreen{height:100vh;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);overflow:hidden;background:#122019}
+  .battle-heading{flex:none;padding:5px 12px 6px;gap:10px;min-height:67px;border-bottom:1px solid #ffffff0e}
+  .battle-name{gap:0;min-width:0}.battle-name h1{font-size:17px;margin:0;white-space:nowrap;max-width:122px;overflow:hidden;text-overflow:ellipsis}
+  .battle-name .eyebrow{font-size:9px;letter-spacing:.9px;max-width:125px;white-space:nowrap;overflow:hidden;display:block;margin-bottom:3px}
+  .back-btn{display:none}.resource-group{gap:16px;flex:none}.resource{display:flex;gap:0}.resource-icon{display:none}.resource-label{font-size:9px;letter-spacing:.6px}.resource strong{font-size:21px;line-height:1.3;font-variant-numeric:tabular-nums}.resource small{font-size:11px}.wave-resource{display:flex}
+  .battle-layout{display:flex;flex:1;min-height:0;gap:0}.battle-main{display:flex;flex-direction:column;flex:1;min-height:0;border:0;border-radius:0;position:relative}
+  .board-toolbar{flex:none;height:48px;min-height:48px;padding:0 8px 0 14px;border:0;background:#17271e}
+  .board-status{font-size:10px;letter-spacing:1px}.battle-controls{gap:2px}.battle-controls button{min-width:48px;height:48px;font-size:21px;padding:0}
+  .battle-controls #speed{font-size:17px;font-variant-numeric:tabular-nums}.battle-controls #pause,.battle-controls #restart,.battle-controls #fullscreen{display:none}
+  .mobile-only{display:block}.battle-controls .mobile-only{display:grid;place-items:center}
+  .board-wrap{flex:1;min-height:0;aspect-ratio:auto;border:0;background:#20372f;isolation:isolate}
+  .board-wrap canvas{position:absolute;inset:0;touch-action:none;user-select:none;-webkit-user-select:none}
+  .camera-controls{position:absolute;right:9px;top:10px;display:flex;flex-direction:column;gap:4px}
+  .camera-controls button{width:44px;height:44px;display:grid;place-items:center;font-size:23px;background:#15271ee6;border:1px solid #c8ee8b33;border-radius:10px;box-shadow:0 2px 6px #10201722}
+  .camera-controls button:disabled{opacity:.32}.camera-controls #zoom-reset{font-size:22px}
+  .board-announcement{top:10px;left:10px;transform:none;max-width:calc(100% - 74px);width:auto;padding:9px 12px;pointer-events:none;background:#14251de8;border-radius:9px;backdrop-filter:none}
+  .board-announcement strong{font-size:14px}.board-announcement span{font-size:11px;line-height:1.4}
+  .board-hint{bottom:9px;font-size:11px;line-height:1.35;max-width:calc(100% - 24px);padding:7px 10px;border-radius:8px;pointer-events:none;background:#15251deb}
+  .pause-overlay{gap:12px;background:#102219bb}.pause-overlay strong{font-size:23px}.pause-overlay>span{font-size:28px}.pause-overlay .secondary-btn{min-height:48px;font-size:15px;padding:12px 22px}
+  .battle-main>.command-bar,.battle-main>.intel,.battle-layout>.arsenal,.battle-footer{display:none}
+  .mobile-dock{flex:none;background:#17271f;border-top:1px solid #c8ee8b22;padding:0 12px max(12px,env(safe-area-inset-bottom));box-shadow:0 -5px 22px #10201922;z-index:3}
+  .mobile-intel{display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;min-height:44px;font-size:12px;color:#bccbb4;text-align:left;padding:5px 1px}.mobile-intel>span:last-child{color:#93a48f;font-size:11px;white-space:nowrap}.mobile-intel>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mobile-actions{display:grid;grid-template-columns:1fr 1fr 1.65fr;gap:8px}
+  .mobile-actions>button{min-height:60px;border-radius:12px;font-size:12px;background:#243b2b;border:1px solid #bfe49224;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;padding:7px 5px}
+  .mobile-actions>button>span{font-size:24px;line-height:1.1;color:var(--accent)}
+  .mobile-actions .primary-btn{font-size:14px;background:var(--accent);color:#20331b;flex-direction:row;gap:9px;font-weight:650}
+  .mobile-actions .primary-btn>span{font-size:15px;color:inherit}
+  .placement-bar{display:grid;grid-template-columns:1fr 48px;gap:8px;padding-top:12px}
+  .placement-bar>div{min-height:46px;display:flex;flex-direction:column;gap:2px;justify-content:center}.placement-bar strong{font-size:15px}.placement-bar>div>span{font-size:12px;color:#a9baa4}
+  #placement-cancel{min-width:48px;min-height:48px;border-radius:10px;font-size:25px;padding:5px}
+  #placement-confirm{grid-column:1/-1;min-height:52px;border-radius:11px;font-size:15px}
+  .mobile-dock.placing .mobile-intel{display:none}
+  dialog,dialog.wide{width:100%;max-width:600px;max-height:92dvh;margin:auto auto 0;border-radius:20px 20px 0 0}
+  dialog::backdrop{backdrop-filter:none}.modal-content{padding:22px 20px max(24px,env(safe-area-inset-bottom))}.modal-header{gap:12px;align-items:center}.modal-header h2{font-size:24px;line-height:1.2}.modal-close{width:48px;height:48px;min-width:48px;font-size:28px;background:#ffffff09;border-radius:50%}
+  .modal-lead{font-size:14px;line-height:1.65}.modal-actions{gap:8px;flex-wrap:wrap}.modal-actions>button{min-height:50px;font-size:15px;border-radius:10px}.settings-row{min-height:70px}.settings-row input[type=checkbox]{width:26px;height:26px}.settings-row input[type=range]{height:44px}.settings-row strong{font-size:15px}.settings-row small{font-size:12px}
+  .help-steps,.codex-grid{grid-template-columns:1fr}.help-step h3{font-size:17px}.help-step p{font-size:14px}.shortcut-list{display:none}.codex-tabs button{min-height:48px;font-size:14px}.result-center h2{font-size:29px}.result-stats{gap:8px}.result-stat strong{font-size:22px}.result-stat span{font-size:11px}
+  .toast-stack{bottom:calc(136px + env(safe-area-inset-bottom));left:12px;right:12px;width:auto;max-width:none;pointer-events:none}.toast{padding:12px 15px;font-size:13px;border-radius:9px}
+}
+@media(max-width:360px){.battle-heading{padding-left:10px;padding-right:10px}.resource-group{gap:11px}.battle-name h1{max-width:101px;font-size:16px}.battle-name .eyebrow{max-width:96px;font-size:8px}.resource strong{font-size:19px}.hero-content{padding:22px 16px 18px}.deployment-options{grid-template-columns:1fr 1.2fr}#tactical-sheet{padding-left:14px;padding-right:14px}#sheet-body .tower-card strong{font-size:12px}}
+@media(max-width:760px) and (max-height:650px){.battle-heading{min-height:55px;padding-top:2px;padding-bottom:2px}.board-toolbar{height:44px;min-height:44px}.battle-controls button{height:44px}.mobile-actions>button{min-height:52px}.mobile-dock{padding-bottom:max(8px,env(safe-area-inset-bottom))}.board-hint{display:none}.board-announcement span{display:none}}
